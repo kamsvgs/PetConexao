@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastrar Animal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="logo">PetConexão</div>
+    <nav>
+      <a href="index.html">Início</a>
+    </nav>
+  </header>
+
+  <section class="intro">
+    <h2>Cadastrar Novo Animal</h2>
+    <p>Preencha os dados do animal disponível para adoção:</p>
+  </section>
+
+  <section style="max-width: 500px; margin: 0 auto;">
+    <form id="form-animal">
+      <label for="nome">Nome:</label><br>
+      <input type="text" id="nome" name="nome" required><br><br>
+
+      <label for="tipo">Tipo (cachorro, gato, etc):</label><br>
+      <input type="text" id="tipo" name="tipo" required><br><br>
+
+      <label for="local">Local de Resgate:</label><br>
+      <input type="text" id="local" name="local" required><br><br>
+
+      <label for="contato">Número de Contato:</label><br>
+      <input type="tel" id="contato" name="contato" pattern="[0-9\s()+-]+" placeholder="(00) 00000-0000" required><br><br>
+
+      <label for="idade">Idade:</label><br>
+      <select id="idade" name="idade" required>
+        <option value="" disabled selected>Selecione</option>
+        <option value="Filhote">Filhote</option>
+        <option value="Adulto">Adulto</option>
+      </select><br><br>
+
+      <label for="imagem">Imagem do Animal:</label><br>
+      <input type="file" id="imagem" name="imagem" accept="image/*" required><br><br>
+
+      <button type="submit">Cadastrar</button>
+    </form>
+  </section>
+
+  <script src="data.js"></script>
+</body>
+</html>
+

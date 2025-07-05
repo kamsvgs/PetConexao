@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastrar ONG</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; }
+    label { display: block; margin-top: 10px; }
+    input, textarea, button { width: 100%; padding: 8px; margin-top: 4px; }
+    button { width: auto; margin-top: 15px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <h2>Cadastrar ONG</h2>
+  <form id="form-ong" enctype="multipart/form-data">
+    <label for="nome">Nome da ONG:</label>
+    <input type="text" id="nome" name="nome" required />
+
+    <label for="descricao">Descrição:</label>
+    <textarea id="descricao" name="descricao" rows="4" required></textarea>
+
+    <label for="tipoAjuda">Tipo de ajuda:</label>
+    <textarea id="tipoAjuda" name="tipoAjuda" rows="3" required></textarea>
+
+    <label for="local">Local da ONG:</label>
+    <input type="text" id="local" name="local" required />
+
+    <label for="contato">Contato (e-mail ou telefone):</label>
+    <input type="text" id="contato" name="contato" required />
+
+    <label for="imagem">Imagem da ONG:</label>
+    <input type="file" id="imagem" name="imagem" accept="image/*" required />
+
+    <button type="submit">Cadastrar ONG</button>
+    <button type="button" id="resetar">Resetar dados</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('form-ong');
+    const btnReset = document.getElementById('resetar');
+
+    btnReset.addEventListener('click', () => {
+      localStorage.removeItem('ongsCadastradas');
+      alert('Dados das ONGs apagados!');
+      form.reset();
+    });
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const fileInput = form.imagem;
+      if (fileInput.files.length === 0) {
+        alert('Por favor, selecione uma imagem da ONG.');
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = function() {
+        const novaOng = {
+          nome: form.nome.value.trim(),
+          descricao: form.descricao.value.trim(),
+          tipoAjuda: form.tipoAjuda.value.trim(),
+          local: form.local.value.trim(),
+          contato: form.contato.value.trim(),
+          imagem: reader.result
+        };
+
+        let ongsCadastradas = JSON.parse(localStorage.getItem('ongsCadastradas')) || [];
+        ongsCadastradas.push(novaOng);
+        localStorage.setItem('ongsCadastradas', JSON.stringify(ongsCadastradas));
+
+        alert('ONG cadastrada com sucesso!');
+        form.reset();
+        window.location.href = 'index.html';  // ou qualquer página que queira redirecionar
+      };
+
+      reader.readAsDataURL(fileInput.files[0]);
+    });
+  </script>
+
+</body>
+</html>
+
+
+
+

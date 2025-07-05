@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PetConexão</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1 class="logo">PetConexão</h1>
+    <nav>
+      <a href="cadastroanimal.html">Cadastrar Animal</a>
+      <a href="cadastroong.html">Cadastrar ONG</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>Conectando pets a novos lares</h2>
+      <p>Uma plataforma para facilitar a adoção de animais e apoiar ONGs de proteção animal.</p>
+    </section>
+
+    <section class="adocao">
+      <h2>Animais para Adoção</h2>
+      <div id="animal-list" class="animal-grid"></div>
+    </section>
+
+    <section class="ong-section">
+      <h2>ONGs Parceiras</h2>
+      <div id="ong-list" class="animal-grid"></div>
+    </section>
+  </main>
+
+  <script>
+    // ----- Animais -----
+    const containerAnimais = document.getElementById('animal-list');
+
+    const animaisFixos = [
+      {
+        nome: "Bidu",
+        tipo: "Cachorro",
+        local: "São Paulo, SP",
+        contato: "(11) 99999-9999",
+        idade: "Adulto",
+        imagem: "https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        nome: "Mimi",
+        tipo: "Gato",
+        local: "Rio de Janeiro, RJ",
+        contato: "(21) 98888-8888",
+        idade: "Filhote",
+        imagem: "https://portalvet.royalcanin.com.br/media/wp-content/uploads/2025/02/BP_LOT-3_ABYSSINIAN_COLOUR_Med._Res.___Basic_748786-720x550.jpg"
+      },
+      {
+        nome: "Luna",
+        tipo: "Coelho",
+        local: "Belo Horizonte, MG",
+        contato: "(31) 97777-7777",
+        idade: "Adulto",
+        imagem:  "https://petanjo.com/blog/wp-content/uploads/2022/09/coelho-de-estimacao-2.jpg"
+      }
+    ];
+
+    // ----- ONGs -----
+    const containerOngs = document.getElementById('ong-list');
+
+    const ongsFixas = [
+      {
+        nome: "Amigos dos Animais",
+        descricao: "ONG dedicada ao resgate e cuidado de cães e gatos.",
+        ajuda: "Ração e medicamentos",
+        local: "São Paulo, SP",
+        contato: "(11) 98888-7777",
+        imagem: "https://i1.sndcdn.com/artworks-gf4Jzgq0EaZKTeTZ-YCO9cA-t500x500.jpg"
+      },
+      {
+        nome: "Protetores da Vida",
+        descricao: "Apoiando abrigos e promovendo adoção responsável.",
+        ajuda: "Voluntários para cuidados",
+        local: "Rio de Janeiro, RJ",
+        contato: "(21) 97777-6666",
+        imagem: "https://s3-sa-east-1.amazonaws.com/projetos-artes/fullsize%2F2011%2F11%2F21%2F15%2FWDL-Logo-9158_6769_041902706_55413641.jpg"
+      },
+      {
+        nome: "Santuário Voz Animal",
+        descricao: "Campanhas para conscientização e proteção animal.",
+        ajuda: "Doações financeiras",
+        local: "Belo Horizonte, MG",
+        contato: "(31) 96666-5555",
+        imagem: "https://i2.wp.com/www.santuariovozanimal.com.br/wp-content/uploads/2019/12/profile-voz-animal-invertido.png?fit=360%2C360&ssl=1"
+      }
+    ];
+
+    // Função para criar card animal
+    function criarCardAnimal(animal) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${animal.imagem}" alt="${animal.nome}" />
+        <h3>${animal.nome}</h3>
+        <p>${animal.tipo} | ${animal.local}</p>
+        <p>Idade: ${animal.idade}</p>
+        <p>Contato: ${animal.contato}</p>
+      `;
+      return card;
+    }
+
+    // Função para criar card ONG
+    function criarCardOng(ong) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${ong.imagem}" alt="${ong.nome}" />
+        <h3>${ong.nome}</h3>
+        <p>${ong.descricao}</p>
+        <p><strong>Tipo de ajuda:</strong> ${ong.ajuda}</p>
+        <p><strong>Local:</strong> ${ong.local}</p>
+        <p><strong>Contato:</strong> ${ong.contato}</p>
+      `;
+      return card;
+    }
+
+    // ----- Exibir Animais -----
+    const animaisCadastrados = JSON.parse(localStorage.getItem('animaisCadastrados')) || [];
+    const ultimosAnimais = animaisCadastrados.slice(-3).reverse();
+    const faltamAnimais = 3 - ultimosAnimais.length;
+    const fixosParaAnimais = animaisFixos.slice(0, faltamAnimais);
+    const listaAnimaisFinal = [...ultimosAnimais, ...fixosParaAnimais];
+
+    if (listaAnimaisFinal.length === 0) {
+      containerAnimais.innerHTML = '<p>Nenhum animal disponível para adoção.</p>';
+    } else {
+      listaAnimaisFinal.forEach(animal => {
+        containerAnimais.appendChild(criarCardAnimal(animal));
+      });
+    }
+
+    // ----- Exibir ONGs -----
+    const ongsCadastradas = JSON.parse(localStorage.getItem('ongsCadastradas')) || [];
+    const ultimasOngs = ongsCadastradas.slice(-3).reverse();
+    const faltamOngs = 3 - ultimasOngs.length;
+    const fixosParaOngs = ongsFixas.slice(0, faltamOngs);
+    const listaOngsFinal = [...ultimasOngs, ...fixosParaOngs];
+
+    if (listaOngsFinal.length === 0) {
+      containerOngs.innerHTML = '<p>Nenhuma ONG cadastrada ainda.</p>';
+    } else {
+      listaOngsFinal.forEach(ong => {
+        containerOngs.appendChild(criarCardOng(ong));
+      });
+    }
+  </script>
+</body>
+</html>
